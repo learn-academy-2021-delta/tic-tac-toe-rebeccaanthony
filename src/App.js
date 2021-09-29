@@ -8,70 +8,79 @@ class App extends Component{
     this.state = {
       squares: ["", "", "", "", "", "", "", "", ""],
       turn: 1, //counter to keep track of turns
-      p1Moves: [],
-      p2Moves: [],
     }
   }
 
   handleGamePlay = (index) => {
     //destructuring
-    const {squares, turn, p1Moves, p2Moves} = this.state
-//at[i] of squares array is forced to boolean value using the boolean method and then flipped using the bang operator
-//ex: squares[0] => true because empty string is a falsey value.
+    const {squares, turn } = this.state
+
+    //at[i] of squares array is forced to boolean value using the boolean method and then flipped using the bang operator, if square is empty and condition returns true, update values
     if(!Boolean(squares[index])){
 
-    //if first turn (or odd number on counter)-> then return X
-    if (turn%2 !== 0){
-      setTimeout(()=> alert("player 2 turn"), 100)
-      squares[index] = "❎"
-      let newTurn = turn + 1
-      let newP1Moves = [...p1Moves, index]
-      this.setState({squares: squares, turn: newTurn, p1Moves: newP1Moves})
-      console.log(p1Moves)
-    }
+      //if first turn (or odd number on counter)-> then return X
+      if (turn%2 !== 0){
+        // setTimeout(()=> alert("Player two's turn!"), 100)
+        squares[index] = "X"
+        let newTurn = turn + 1
+        this.setState({squares: squares, turn: newTurn})
 
-    //if after (if even number counter) -> return O
-    else {
-      setTimeout(()=> alert ("player 1 turn"), 100)
-      squares[index] = "🅾️"
-      let newTurn = turn + 1
-      this.setState({squares: squares, turn: newTurn})
-    }
- //creates 2 arrays to track player moves
-    //create array of arrays with each inner array being a win condition
-    const winConditions=[
-      [0, 4, 8],
-      [0, 3, 6],
-      [1, 4, 7], 
-      [2, 5, 8],
-      [0, 1, 2], 
-      [3, 4, 5], 
-      [6, 7, 8], 
-      [2, 4, 6]
-    ];
+      }
 
-     // for (let i = 0, i < winConditions.length; i++){  //iterates through winConditions array 
-    //   winConditions[0].every(values => {
-    //    returns player1moves.includes(values)
-    //}
-    //        
-    // }
-
-    //after click check if either player won
-    //test if player meets any of the 8 win conditions
-
-
-    //iterate through win conditions array to look at each inner array
-
-    //if any come back true -> end game (alert)
-
-    //if it contains the 3 indexes (changes based on which win)
-
-
+      //if after (if even number counter) -> return O
+      else {
+        // setTimeout(()=> alert ("Player one's turn!"), 100)
+        squares[index] = "O"
+        let newTurn = turn + 1
+        this.setState({squares: squares, turn: newTurn})
+      }
   }
 }
 
+
+//new function to find the winner, invoked each time the board is rendered
+findWinner = (squares) => {
+  //array of arrays of 8 win conditions
+  const winConditions=[
+        [0, 4, 8],
+        [0, 3, 6],
+        [1, 4, 7], 
+        [2, 5, 8],
+        [0, 1, 2], 
+        [3, 4, 5], 
+        [6, 7, 8], 
+        [2, 4, 6]
+      ];
+  
+  //iterates through winConditions array 
+  for (let i = 0; i < winConditions.length; i++){ 
+    //assigns temporary variables for each element in each specific win condition array 
+    const [a, b, c] = winConditions[i];
+    //if something exists in first box and is the same as the thing in 2nd and 3rd box
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      //returns that thing (X or O)
+      return squares[a];
+    }
+  }
+
+  //if no winner return null
+  return null;
+}
+
+
   render(){
+    //creating a variable to store the result of findWinner (X, O, or Null)
+    let winner = this.findWinner(this.state.squares)
+
+    if (winner === "X"){
+      setTimeout(()=> alert("Game Over! Player 1 won!"), 100)
+    } else if (winner === "O"){
+      setTimeout(()=> alert("Game Over! Player 2 won!"), 100)
+    } else if (winner === null && this.state.turn === 10){ 
+      console.log(this.state.turn)
+      setTimeout(()=> alert("Game Over! Cat's Game!"), 100)
+    }
+
     return(
       <>
         <h1>Tic Tac Toe</h1>
