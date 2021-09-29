@@ -14,6 +14,9 @@ class App extends Component{
   handleGamePlay = (index) => {
     //destructuring
     const {squares, turn} = this.state
+//at[i] of squares array is forced to boolean value using the boolean method and then flipped using the bang operator
+//ex: squares[0] => true because empty string is a falsey value.
+    if(!Boolean(squares[index])){
 
     //if first turn (or odd number on counter)-> then return X
     if (turn%2 !== 0){
@@ -30,6 +33,7 @@ class App extends Component{
     }
 
   }
+}
 
   render(){
     return(
