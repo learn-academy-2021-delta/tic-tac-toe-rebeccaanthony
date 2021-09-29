@@ -8,32 +8,36 @@ class App extends Component{
     this.state = {
       squares: ["", "", "", "", "", "", "", "", ""],
       turn: 1, //counter to keep track of turns
+      p1Moves: [],
+      p2Moves: [],
     }
   }
 
   handleGamePlay = (index) => {
     //destructuring
-    const {squares, turn} = this.state
-
-    //at[i] of squares array is forced to boolean value using the boolean method and then flipped using the bang operator
-    //ex: squares[0] => true because empty string is a falsey value.
+    const {squares, turn, p1Moves, p2Moves} = this.state
+//at[i] of squares array is forced to boolean value using the boolean method and then flipped using the bang operator
+//ex: squares[0] => true because empty string is a falsey value.
     if(!Boolean(squares[index])){
 
     //if first turn (or odd number on counter)-> then return X
     if (turn%2 !== 0){
+      setTimeout(()=> alert("player 2 turn"), 100)
       squares[index] = "❎"
       let newTurn = turn + 1
-      this.setState({squares: squares, turn: newTurn})
+      let newP1Moves = [...p1Moves, index]
+      this.setState({squares: squares, turn: newTurn, p1Moves: newP1Moves})
+      console.log(p1Moves)
     }
 
     //if after (if even number counter) -> return O
     else {
+      setTimeout(()=> alert ("player 1 turn"), 100)
       squares[index] = "🅾️"
       let newTurn = turn + 1
       this.setState({squares: squares, turn: newTurn})
     }
-
-    //creates 2 arrays to track player moves
+ //creates 2 arrays to track player moves
     //create array of arrays with each inner array being a win condition
     const winConditions=[
       [0, 4, 8],
@@ -58,13 +62,10 @@ class App extends Component{
 
 
     //iterate through win conditions array to look at each inner array
-   
+
     //if any come back true -> end game (alert)
-  
+
     //if it contains the 3 indexes (changes based on which win)
-
-
-
 
 
   }
