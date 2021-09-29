@@ -14,7 +14,9 @@ class App extends Component{
     return(
       <>
         <h1>Tic Tac Toe</h1>
-        <Square />
+        <div className="gameboard">{this.state.squares.map(value => {
+          return <Square />
+        })}</div>
       </>
     )
   }
